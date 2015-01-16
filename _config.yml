@@ -1,0 +1,12 @@
+# Site settings
+title: iamkoch.com | abstractions of expressions
+email: site@iamkoch.com
+description: > # this means to ignore newlines until "baseurl:"
+  Thoughts about the internet, software development (front and back end) and anything else that comes to mind.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://iamkoch.com" # the base hostname & protocol for your site
+twitter_username: brightoniant
+github_username:  iamkoch
+
+# Build settings
+markdown: kramdown

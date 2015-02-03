@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "OO Principles: Tell, Don't Ask"
-date:   2015-10-13 18:42:43
-categories: engineering development oo practises
+date:   2014-10-13 18:42:43
+categories: engineering development object-oriented-practises OO
 comments: true
 ---
 I first heard “Tell don’t ask” during a course being given by ThoughtWorks and it’s certainly one of a set of phrases and one-liners that run through my head when coding.
@@ -63,78 +63,42 @@ That doesn’t sound right.
 
 So if we were to fix this, how might we do that? Well, for starters, let’s think about the abstraction. We have a response and we want to convert it into an object our system understands. So our class which understands how to handle response should hand off the response, or parts of it, to a class that understands how to convert it. So a single point of entry ‘convert’ would be ideal. Let’s make one! First of all, here’s our response consumer class:
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-public class ResponseConsumer {
+{% highlight c# %}
+public class ResponseConsumer 
+{
     private Converter converter;
  
-    public ResponseConsumer(MappedObject mappedObject) {
+    public ResponseConsumer(MappedObject mappedObject) 
+    {
         converter = new Converter(mappedObject);
     }
  
-    public MappedObject handleResponse(Response response) {
+    public MappedObject handleResponse(Response response) 
+    {
         return converter.convert(response);
     }
 }
+{% endhighlight %}
 We can see this has been greatly reduced in size, with methods down to a single line, including our new ‘convert’ method. Let’s look at the converter class:
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-public class Converter {
+{% highlight c# %}
+public class Converter 
+{
     private final MappedObject mappedObject;
-    private IMap mapper;
+    private IMap mapper = new XmlResponseMapper();
  
+    public Converter(MappedObject mappedObject) 
     {
-        mapper = new XmlResponseMapper();
-    }
- 
-    public Converter(MappedObject mappedObject) {
         this.mappedObject = mappedObject;
     }
  
-    private boolean getConvertFromBase() {
+    private boolean getConvertFromBase() 
+    {
         return this.mappedObject != null;
     }
  
-    private MappedObject createFrom(Response response) {
+    private MappedObject createFrom(Response response) 
+    {
         return mapper.map(response);
     }
  

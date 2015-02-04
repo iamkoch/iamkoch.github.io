@@ -16,18 +16,18 @@ The main principal behind “Tell, don’t ask” (which I’ll refer to as TDA 
 The following represents a trivial example, but hopefully it helps to explain the principle in greater detail.
 
 {% highlight c# %}
-public class Converter 
+public class Converter
 {
-    private IMap mapper = new XmlResponseMapper();
-    
-    public bool ConvertFromBase { get; set; }
- 
-    public MappedObject CreateFrom(Response response) 
+    private readonly IMap mapper = new XmlResponseMapper();
+
+    public bool ShouldConvertFromBase { get; set; }
+
+    public MappedObject CreateFrom(Response response)
     {
         return this.mapper.Map(response);
     }
- 
-    public MappedObject ConvertFromBase(Response response, MappedObject mappedObject) 
+
+    public MappedObject ConvertFromBase(Response response, MappedObject mappedObject)
     {
         return mapper.Map(response, mappedObject);
     }
@@ -37,21 +37,27 @@ public class Converter
 So here we have a simple class that performs conversion to either a fresh instance of an object, or maps properties from the response into an existing object. Nothing too daring. Let’s look at an example of this object’s consumer:
 
 {% highlight c# %}
-public class ResponseConsumer 
+public class ResponseConsumer
 {
-    private Converter converter = new Converter();
-    private MappedObject mappedObject;
-    public ResponseConsumer(MappedObject mappedObject) {
+    private readonly Converter converter = new Converter();
+
+    private readonly MappedObject mappedObject;
+
+    public ResponseConsumer(MappedObject mappedObject)
+    {
         this.mappedObject = mappedObject;
     }
- 
-    public MappedObject handleResponse(Response response) {
-        converter.setConvertFromBase(mappedObject != null);
-        if (converter.getConvertFromBase()) {
-            return converter.convertFromBase(response, this.mappedObject);
+
+    public MappedObject HandleResponse(Response response)
+    {
+        converter.ShouldConvertFromBase = mappedObject != null;
+
+        if (converter.ShouldConvertFromBase)
+        {
+            return converter.ConvertFromBase(response, mappedObject);
         }
- 
-        return converter.createFrom(response);
+
+        return converter.CreateFrom(response);
     }
 }
 {% endhighlight %}
@@ -85,33 +91,33 @@ We can see this has been greatly reduced in size, with methods down to a single 
 {% highlight c# %}
 public class Converter 
 {
-    private final MappedObject mappedObject;
-    private IMap mapper = new XmlResponseMapper();
- 
+    private readonly MappedObject mappedObject;
+    private readonly IMap mapper = new XmlResponseMapper();
+
     public Converter(MappedObject mappedObject) 
     {
         this.mappedObject = mappedObject;
     }
- 
-    private boolean getConvertFromBase() 
+
+    private bool ShouldConvertFromBase 
     {
-        return this.mappedObject != null;
+        get { return this.mappedObject != null; }
     }
- 
-    private MappedObject createFrom(Response response) 
+
+    private MappedObject CreateFrom(Response response) 
     {
-        return mapper.map(response);
+        return mapper.Map(response);
     }
- 
-    private MappedObject convertFromBase(Response response, MappedObject mappedObject) {
-        return mapper.map(response, mappedObject);
+
+    private MappedObject ConvertFromBase(Response response) {
+        return mapper.Map(response, mappedObject);
     }
- 
-    public MappedObject convert(Response response) {
-        if (getConvertFromBase())
-            return convertFromBase(response, mappedObject);
- 
-        return createFrom(response);
+
+    public MappedObject Convert(Response response) {
+        if (ShouldConvertFromBase)
+            return ConvertFromBase(response);
+
+        return CreateFrom(response);
     }
 }
 {% endhighlight %}

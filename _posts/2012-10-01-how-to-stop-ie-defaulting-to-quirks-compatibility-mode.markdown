@@ -20,8 +20,8 @@ comments: []
 ---
 This is a real arse ache and something worth having yet another blog post out there.
 I was experiencing some issues with a site defaulting to "Quirks Mode' meaning it just plain didn't work.
-It took some choice googling but I eventually found the answer to be a simple one-liner in the &lt;head&gt; element the HTML.
+It took some choice googling but I eventually found the answer to be a simple one-liner in the <head> element the HTML.
 {% highlight html %}
-&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 {% endhighlight %}
 Include this and all of a sudden, if you've done it right, it'll look 'normal' in IE.

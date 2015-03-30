@@ -1,0 +1,35 @@
+---
+layout: post
+status: publish
+published: true
+title: Validating MVC Partials with Unobtrusive Models
+author: Antony Koch
+author_login: amkoch
+author_email: ant@iamkoch.com
+wordpress_id: 61
+wordpress_url: http://localhost/~Ant/wordpress/?p=61
+date: '2012-07-15 14:03:31 +0100'
+date_gmt: '2012-07-15 14:03:31 +0100'
+categories:
+- ".Net"
+- MVC
+- JavaScript
+tags: []
+comments: []
+---
+Hit a bit of an issue at work today. Our models were decorated with the standard DataAnnotations attributes such as Required and RegEx-based ones, but couldn't get them to fire.
+After some trawling I came across a page with the answer.
+{% highlight javascript %}
+$.validator.unobtrusive.parse('#formName');
+{% endhighlight %}
+Calling this once the form is on the page, i.e. if invoked via the Ajax helper passing in the method to the OnSuccess AJaxOption, e.g.
+{% highlight javascript %}
+new AjaxOptions { OnSuccess = "validateMyForm" }
+{% endhighlight %}
+with the following as the Javascript function being called
+{% highlight javascript %}
+function validateMyForm() {
+    return $.validator.unobtrusive.parse('#formName');
+}
+{% endhighlight %}
+allowed the unobtrusive ajax to work.

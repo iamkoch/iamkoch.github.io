@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "OO Principles: Tell, Don't Ask"
-date:   2015-10-13 18:42:43
+date:   2014-10-13 18:42:43
 categories: engineering development oo practises
 comments: true
 ---

@@ -1,0 +1,17 @@
+---
+layout: nav_menu_item
+status: publish
+published: true
+title: Home
+author: Antony Koch
+author_login: amkoch
+author_email: ant@iamkoch.com
+wordpress_id: 229
+wordpress_url: http://iamkoch.com/?p=229
+date: '2013-03-01 21:30:07 +0000'
+date_gmt: '2013-03-01 21:30:07 +0000'
+categories: []
+tags: []
+comments: []
+---
+
